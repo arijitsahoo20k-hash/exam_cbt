@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="theme-color" content="#0a0a0f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ExamCBT" />
+<link rel="apple-touch-icon" href="/icons/icon-192.png" />
+ <meta name="description" content="ExamCBT — Practice like it's the real thing" />
+  <title>ExamCBT — Attempt Any Exam, Anytime</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/exam.css" />
+  <link rel="stylesheet" href="css/result.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+  <!-- FULLSCREEN LOCK OVERLAY -->
+  <div id="fs-lock-overlay" hidden>
+    <div class="fs-lock-content">
+      <div class="fs-lock-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h2>Exam Locked</h2>
+      <p>You must remain in fullscreen mode during the exam.<br/>Exiting fullscreen has been recorded as a violation.</p>
+      <button id="fs-reenter-btn">🔒 Re-enter Fullscreen to Continue</button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div id="screen-loading" class="screen active">
+    <div class="loader-wrap">
+      <div class="loader-logo">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="14" fill="#6366f1"/>
+          <defs></defs>
+          <path d="M10 22h7l3-9 6 18 3-9h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ExamCBT</span>
+      </div>
+      <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+      <p class="loader-status" id="loader-status">Initializing…</p>
+    </div>
+  </div>
+
+  <!-- AUTH SCREEN -->
+  <div id="screen-auth" class="screen">
+    <div class="auth-bg"><div class="auth-grid"></div></div>
+    <div class="auth-panel">
+      <div class="auth-brand">
+        <svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="14" fill="#6366f1"/>
+          <defs></defs>
+          <path d="M10 22h7l3-9 6 18 3-9h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ExamCBT</span>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+      <div class="auth-form active" id="form-login">
+        <div class="field-group"><label>Email Address</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" /></div>
+        <div class="field-group"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" /></div>
+        <button class="btn-primary" id="btn-login">Sign In</button>
+        <button class="btn-ghost" id="btn-guest">Continue as Guest</button>
+        <p class="auth-error" id="login-error"></p>
+      </div>
+      <div class="auth-form" id="form-register">
+        <div class="field-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Aryan Sharma" autocomplete="name" /></div>
+        <div class="field-group"><label>Email Address</label><input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" /></div>
+        <div class="field-group"><label>Password</label><input type="password" id="reg-password" placeholder="Min 8 characters" autocomplete="new-password" /></div>
+        <button class="btn-primary" id="btn-register">Create Account</button>
+        <p class="auth-error" id="reg-error"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="screen-dashboard" class="screen">
+    <header class="dash-header">
+      <div class="dash-logo">
+        <svg width="28" height="28" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="14" fill="#6366f1"/>
+          <defs></defs>
+          <path d="M10 22h7l3-9 6 18 3-9h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ExamCBT</span>
+      </div>
+      <div class="dash-user">
+        <span id="dash-username">Guest</span>
+        <button class="btn-icon" id="btn-logout" title="Sign Out">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="dash-main">
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-content">
+          <div class="hero-badge">⚡ Your Exam. Your Rules.</div>
+          <h1 class="hero-title">Attempt any exam —<br/><span class="hero-accent">like it's exam day.</span></h1>
+          <p class="hero-sub">Upload any question paper as a ZIP and get a full CBT experience instantly.<br/>Timed. Anti-cheat. Scored. Reviewed.</p>
+          <div class="hero-stats">
+            <div class="hstat"><span class="hstat-num">Any</span><span class="hstat-lbl">Exam Format</span></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><span class="hstat-num">Live</span><span class="hstat-lbl">Score Analysis</span></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><span class="hstat-num">∞</span><span class="hstat-lbl">Custom Tests</span></div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hv-card hv-card-1"><div class="hvc-dot green"></div><div class="hvc-label">Physics</div><div class="hvc-score">38/40</div></div>
+          <div class="hv-card hv-card-2"><div class="hvc-dot blue"></div><div class="hvc-label">Chemistry</div><div class="hvc-score">35/40</div></div>
+          <div class="hv-card hv-card-3"><div class="hvc-dot purple"></div><div class="hvc-label">Mathematics</div><div class="hvc-score">44/45</div></div>
+        </div>
+      </section>
+
+      <!-- ── Dashboard Tab Bar ───────────────────────────────── -->
+      <div class="dash-tabs-bar">
+        <button class="dash-tab active" data-tab="tests">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Mock Tests
+        </button>
+        <button class="dash-tab" data-tab="custom">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Custom Test
+        </button>
+        <button class="dash-tab" data-tab="history">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          History
+        </button>
+      </div>
+
+      <!-- ── TAB: Mock Tests ────────────────────────────────── -->
+      <div class="dash-tab-panel active" id="tab-tests">
+        <section class="mocks-section">
+          <div class="section-header">
+            <div class="section-tag">PRELOADED</div>
+            <h2 class="section-title">Preloaded Mock Tests</h2>
+            <p class="section-sub">Ready to attempt · Full marking scheme · Instant review</p>
+          </div>
+          <div class="mocks-grid" id="mocks-grid"></div>
+        </section>
+      </div>
+
+      <!-- ── TAB: Custom Test Upload ────────────────────────── -->
+      <div class="dash-tab-panel" id="tab-custom">
+        <section class="upload-section">
+          <div class="section-header">
+            <div class="section-tag">CUSTOM</div>
+            <h2 class="section-title">Load Your Own Test</h2>
+            <p class="section-sub">Upload a ZIP generated from <a href="https://pdf2cbt.vercel.app/" target="_blank" rel="noopener" class="section-link">pdf2cbt.vercel.app</a> to start instantly</p>
+          </div>
+
+          <!-- How-to instruction card -->
+          <div class="zip-howto-card">
+            <div class="zip-howto-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span>How to generate your ZIP</span>
+            </div>
+            <ol class="zip-howto-steps">
+              <li>
+                <span class="zip-step-num">1</span>
+                <div>
+                  <strong>Open the converter</strong> — Visit
+                  <a href="https://pdf2cbt.vercel.app/" target="_blank" rel="noopener">pdf2cbt.vercel.app</a>
+                  in your browser.
+                </div>
+              </li>
+              <li>
+                <span class="zip-step-num">2</span>
+                <div>
+                  <strong>Upload your exam PDF</strong> — Drop in any question-paper PDF that has multiple-choice questions.
+                </div>
+              </li>
+              <li>
+                <span class="zip-step-num">3</span>
+                <div>
+                  <strong>Configure &amp; convert</strong> — Set section names, marking scheme (+3 / −1 for BITSAT), and click <em>Generate ZIP</em>.
+                </div>
+              </li>
+              <li>
+                <span class="zip-step-num">4</span>
+                <div>
+                  <strong>Download the ZIP</strong> — The site produces a <code>.zip</code> containing <code>data.json</code> and question images. Save it to your device.
+                </div>
+              </li>
+              <li>
+                <span class="zip-step-num">5</span>
+                <div>
+                  <strong>Upload below</strong> — Drag &amp; drop or browse to select the ZIP file. ExamCBT will load it as a full mock test instantly.
+                </div>
+              </li>
+            </ol>
+            <a class="zip-howto-cta" href="https://pdf2cbt.vercel.app/" target="_blank" rel="noopener">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              Open pdf2cbt.vercel.app
+            </a>
+          </div>
+
+          <div class="upload-zone" id="upload-zone">
+            <input type="file" id="zip-input" accept=".zip" hidden />
+            <div class="upload-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            </div>
+            <p class="upload-title">Drop your ZIP file here</p>
+            <p class="upload-sub">or <button class="link-btn" id="upload-browse">browse files</button></p>
+            <p class="upload-hint">Supports: .zip containing data.json + question images</p>
+            <div class="upload-progress" id="upload-progress" hidden>
+              <div class="upload-bar"><div class="upload-fill" id="upload-fill"></div></div>
+              <p id="upload-status">Processing…</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ── TAB: History ───────────────────────────────────── -->
+      <div class="dash-tab-panel" id="tab-history">
+        <section class="dash-history" id="dash-history">
+          <div class="section-header">
+            <div class="section-tag">HISTORY</div>
+            <h2 class="section-title">Recent Attempts</h2>
+            <p class="section-sub">Your past exam scores with full per-question answer review</p>
+          </div>
+          <div id="supabase-notice" class="supabase-notice" hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>History requires Supabase. Add your <strong>SUPABASE_URL</strong> and <strong>SUPABASE_ANON_KEY</strong> to <code>js/config.js</code> to enable cloud history &amp; answer review.</span>
+          </div>
+          <div class="history-summary" id="history-summary"></div>
+          <div class="history-filter-tabs" id="history-filter-tabs"></div>
+          <div class="attempts-grid" id="attempts-grid"></div>
+        </section>
+      </div>
+      <div class="dash-inline-footer">
+        <div class="dash-footer-credit">© 2025 ExamCBT. Founded and Developed by <a href="https://github.com/pocccco-max" target="_blank" rel="noopener" class="dash-footer-link">pocccco-max</a></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- EXAM SETUP -->
+  <div id="screen-setup" class="screen">
+    <div class="setup-wrap">
+      <div class="setup-card">
+        <div class="setup-header">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <defs></defs>
+            <path stroke="#6366f1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          <h2 id="setup-title">Exam Ready</h2>
+        </div>
+        <div class="setup-stats" id="setup-stats"></div>
+        <div class="setup-instructions">
+          <h3>Instructions</h3>
+          <ul>
+            <li>The exam runs in <strong>mandatory fullscreen</strong>. Exiting will pause and record a violation.</li>
+            <li>Use the question palette on the right to navigate.</li>
+            <li>Mark questions for review using the bookmark button.</li>
+            <li>Each correct answer awards <strong>+3</strong> marks; wrong answers deduct <strong>−1</strong>.</li>
+            <li>The timer will auto-submit when time is up.</li>
+            <li>Do not switch tabs or minimize the browser window.</li>
+          </ul>
+        </div>
+        <div class="setup-actions">
+          <button class="btn-ghost" id="btn-back-dashboard">← Back</button>
+          <button class="btn-primary large" id="btn-start-exam">Start Exam →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAM SCREEN -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-topbar">
+      <div class="topbar-left">
+        <div class="topbar-logo">
+          <svg width="22" height="22" viewBox="0 0 44 44" fill="none">
+            <rect width="44" height="44" rx="10" fill="#6366f1"/>
+            <defs></defs>
+            <path d="M10 22h7l3-9 6 18 3-9h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>ExamCBT</span>
+        </div>
+        <div class="topbar-candidate">
+          <span id="exam-candidate">Candidate</span>
+          <span class="separator">|</span>
+          <span id="exam-title-bar">Exam</span>
+        </div>
+      </div>
+      <div class="topbar-center">
+        <div class="timer-block" id="timer-block">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span id="timer-display">03:00:00</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-submit-exam" id="btn-submit-exam">Submit Exam</button>
+      </div>
+    </div>
+
+    <div class="section-tabs" id="section-tabs"></div>
+
+    <div class="exam-body">
+      <div class="question-area">
+        <div class="question-meta">
+          <span class="q-number" id="q-number">Question 1</span>
+          <div class="q-actions">
+            <button class="btn-zoom" id="btn-zoom">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg> Zoom
+            </button>
+            <button class="btn-mark" id="btn-mark">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg> Mark for Review
+            </button>
+          </div>
+        </div>
+        <div class="question-image-wrap" id="question-image-wrap">
+          <img id="question-img" src="" alt="Question" draggable="false" />
+          <div class="img-loader" id="img-loader"><div class="spinner"></div></div>
+        </div>
+        <div class="options-area" id="options-area">
+          <div class="option-row" data-val="A"><span class="opt-label">A</span><span class="opt-text">Option A</span></div>
+          <div class="option-row" data-val="B"><span class="opt-label">B</span><span class="opt-text">Option B</span></div>
+          <div class="option-row" data-val="C"><span class="opt-label">C</span><span class="opt-text">Option C</span></div>
+          <div class="option-row" data-val="D"><span class="opt-label">D</span><span class="opt-text">Option D</span></div>
+        </div>
+        <div class="nav-actions">
+          <button class="btn-clear" id="btn-clear">Clear Response</button>
+          <div class="nav-btns">
+            <button class="btn-nav" id="btn-prev">← Previous</button>
+            <button class="btn-nav primary" id="btn-next">Save & Next →</button>
+          </div>
+        </div>
+      </div>
+      <aside class="exam-sidebar">
+        <div class="sidebar-candidate">
+          <div class="candidate-avatar" id="sidebar-avatar">A</div>
+          <span id="sidebar-name">Candidate</span>
+        </div>
+        <div class="palette-legend">
+          <div class="legend-item"><span class="dot answered"></span>Answered</div>
+          <div class="legend-item"><span class="dot not-answered"></span>Not Answered</div>
+          <div class="legend-item"><span class="dot marked"></span>Marked</div>
+          <div class="legend-item"><span class="dot not-visited"></span>Not Visited</div>
+          <div class="legend-item"><span class="dot marked-answered"></span>Marked &amp; Answered</div>
+        </div>
+        <div class="palette-section-label" id="palette-section-label">Section</div>
+        <div class="palette-grid" id="palette-grid"></div>
+        <div class="sidebar-stats">
+          <div class="stat-row"><span>Answered</span><strong id="stat-answered">0</strong></div>
+          <div class="stat-row"><span>Not Answered</span><strong id="stat-not-answered">0</strong></div>
+          <div class="stat-row"><span>Marked</span><strong id="stat-marked">0</strong></div>
+          <div class="stat-row"><span>Not Visited</span><strong id="stat-not-visited">0</strong></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="screen-result" class="screen">
+
+    <!-- Top bar — mimics exam portal header -->
+    <div class="res-topbar">
+      <div class="res-topbar-left">
+        <svg width="26" height="26" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="12" fill="#6366f1"/>
+          <path d="M10 22h7l3-9 6 18 3-9h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="res-topbar-title">ExamCBT</span>
+        <span class="res-topbar-sep">|</span>
+        <span class="res-topbar-exam" id="result-exam-name">BITSAT Mock Test</span>
+      </div>
+      <div class="res-topbar-right">
+        <span class="res-submitted-badge">✓ Submitted Successfully</span>
+      </div>
+    </div>
+
+    <div class="res-body">
+
+      <!-- Left: candidate info + score panel -->
+      <div class="res-left">
+
+        <!-- Candidate card -->
+        <div class="res-candidate-card">
+          <div class="res-candidate-avatar" id="res-avatar">A</div>
+          <div class="res-candidate-info">
+            <div class="res-candidate-name" id="res-candidate-name">Candidate</div>
+            <div class="res-candidate-meta" id="res-candidate-meta">ExamCBT · BITSAT</div>
+          </div>
+        </div>
+
+        <!-- Score panel — the big number -->
+        <div class="res-score-panel" id="res-score-panel">
+          <div class="res-score-label">YOUR SCORE</div>
+          <div class="res-score-big">
+            <span id="score-val">0</span><span class="res-score-denom" id="score-max">/450</span>
+          </div>
+          <div class="res-score-pct-row">
+            <span class="res-pct-badge" id="res-pct-badge">0%</span>
+            <span class="res-score-hint" id="score-rank-hint">Keep practicing!</span>
+          </div>
+          <!-- Arc meter -->
+          <div class="res-arc-wrap">
+            <svg width="160" height="86" viewBox="0 0 160 86">
+              <path d="M10,80 A70,70 0 0,1 150,80" fill="none" stroke="var(--border)" stroke-width="10" stroke-linecap="round"/>
+              <path id="score-arc" d="M10,80 A70,70 0 0,1 150,80" fill="none" stroke="#6366f1" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="220" stroke-dashoffset="220"/>
+            </svg>
+          </div>
+          <div class="res-time-taken">
+            ⏱ Time taken: <strong id="res-time-taken">—</strong>
+          </div>
+        </div>
+
+        <!-- Question summary boxes -->
+        <div class="res-qsummary">
+          <div class="res-qbox total">
+            <div class="res-qbox-num" id="rq-total">—</div>
+            <div class="res-qbox-lbl">Total Qs</div>
+          </div>
+          <div class="res-qbox attempted">
+            <div class="res-qbox-num" id="rq-attempted">—</div>
+            <div class="res-qbox-lbl">Attempted</div>
+          </div>
+          <div class="res-qbox correct">
+            <div class="res-qbox-num" id="rq-correct">—</div>
+            <div class="res-qbox-lbl">Correct</div>
+          </div>
+          <div class="res-qbox wrong">
+            <div class="res-qbox-num" id="rq-wrong">—</div>
+            <div class="res-qbox-lbl">Wrong</div>
+          </div>
+          <div class="res-qbox skipped">
+            <div class="res-qbox-num" id="rq-skipped">—</div>
+            <div class="res-qbox-lbl">Skipped</div>
+          </div>
+          <div class="res-qbox accuracy">
+            <div class="res-qbox-num" id="rq-accuracy">—</div>
+            <div class="res-qbox-lbl">Accuracy</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: section-wise table + actions -->
+      <div class="res-right">
+
+        <div class="res-section-card">
+          <div class="res-section-heading">Section-wise Performance</div>
+          <table class="res-table" id="res-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Total Qs</th>
+                <th>Attempted</th>
+                <th>Correct</th>
+                <th>Wrong</th>
+                <th>Score</th>
+                <th>Max</th>
+                <th>%</th>
+              </tr>
+            </thead>
+            <tbody id="res-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Marks legend -->
+        <div class="res-marks-legend">
+          <div class="res-legend-item">
+            <span class="res-legend-dot correct"></span>
+            Correct: <strong>+3 marks</strong>
+          </div>
+          <div class="res-legend-item">
+            <span class="res-legend-dot wrong"></span>
+            Wrong: <strong>−1 mark</strong>
+          </div>
+          <div class="res-legend-item">
+            <span class="res-legend-dot skipped"></span>
+            Unattempted: <strong>0 marks</strong>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="res-actions">
+          <button class="res-btn-secondary" id="btn-review-answers">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            View Answer Key
+          </button>
+          <button class="res-btn-secondary" id="btn-go-home">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Go to Dashboard
+          </button>
+          <button class="res-btn-primary" id="btn-new-test">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            Attempt Another Test
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="screen-review" class="screen">
+    <div class="review-header">
+      <div class="review-header-left">
+        <button class="review-back-btn" id="btn-back-result">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Results
+        </button>
+        <div class="review-title-block">
+          <h2 id="review-exam-title">Answer Review</h2>
+          <span id="review-progress-label" class="review-progress-label">Q 1 of 130</span>
+        </div>
+      </div>
+      <div class="review-header-right">
+        <div class="review-legend">
+          <span class="rl-item correct">✓ Correct</span>
+          <span class="rl-item wrong">✗ Wrong</span>
+          <span class="rl-item skipped">— Skipped</span>
+        </div>
+        <a id="review-pdf-btn" class="review-pdf-link" href="#" target="_blank" rel="noopener" hidden>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Solutions PDF
+        </a>
+      </div>
+    </div>
+    <div class="review-body">
+      <div class="review-question-area">
+        <div class="review-q-meta">
+          <span class="review-q-number" id="review-q-number">Q1</span>
+          <span id="review-q-status-badge" class="review-badge"></span>
+          <button class="btn-zoom" id="review-btn-zoom">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg> Zoom
+          </button>
+        </div>
+        <div id="review-question-text" class="review-question-text" style="display:none"></div>
+        <div class="question-image-wrap" id="review-image-wrap">
+          <img id="review-img" src="" alt="Question" draggable="false"/>
+          <div class="img-loader" id="review-img-loader"><div class="spinner"></div></div>
+        </div>
+        <div class="review-options" id="review-options"></div>
+        <div class="review-explanation" id="review-explanation" hidden>
+          <div class="re-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Answer Key
+          </div>
+          <div id="re-content"></div>
+        </div>
+        <div class="review-nav-actions">
+          <button class="btn-nav" id="review-btn-prev">← Previous</button>
+          <button class="btn-nav primary" id="review-btn-next">Next →</button>
+        </div>
+      </div>
+      <aside class="review-sidebar">
+        <div class="review-sidebar-title">Question Navigator</div>
+        <div class="review-section-tabs" id="review-section-tabs"></div>
+        <div class="review-palette" id="review-palette"></div>
+        <div class="review-sidebar-stats" id="review-sidebar-stats"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ZOOM MODAL -->
+  <div id="zoom-modal" class="modal-overlay" hidden>
+    <div class="zoom-container">
+      <button class="zoom-close" id="zoom-close">✕</button>
+      <img id="zoom-img" src="" alt="Zoomed" />
+    </div>
+  </div>
+
+  <!-- SUBMIT MODAL -->
+  <div id="submit-modal" class="modal-overlay" hidden>
+    <div class="modal-card">
+      <h2>Submit Exam?</h2>
+      <p>Are you sure? You cannot change answers after submission.</p>
+      <div class="modal-stats" id="modal-stats"></div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="btn-cancel-submit">Cancel</button>
+        <button class="btn-danger" id="btn-confirm-submit">Submit Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTI-CHEAT -->
+  <div id="anti-cheat-overlay">
+    <div class="ac-icon">🚫</div>
+    <h2>Exam Paused</h2>
+    <p>You switched tabs or left the exam window. This violation has been recorded.</p>
+    <div id="ac-countdown">5</div>
+    <p style="font-size:12px;color:#64748b">Exam will resume automatically…</p>
+  </div>
+  <div id="ac-warning-banner"></div>
+  <div id="ac-violation-log"></div>
+
+  <!-- DEBUG -->
+  <div id="debug-panel" class="debug-panel" hidden>
+    <div class="debug-header"><span>🔍 Debug</span><button id="debug-close">✕</button></div>
+    <div class="debug-body" id="debug-body"></div>
+  </div>
+  <button id="debug-trigger" class="debug-trigger" title="Debug (Ctrl+Shift+D)">🔍</button>
+
+  <div id="toast-container"></div>
+  <button class="btn-theme-toggle" id="btn-theme-toggle" title="Toggle Theme">🌙</button>
+
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/zip-processor.js"></script>
+  <script src="js/exam-engine.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/result.js"></script>
+  <script src="js/debug.js"></script>
+  <script src="js/anti-cheat.js"></script>
+  <script src="js/review.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // ── Dashboard Tab Switcher ──────────────────────────────
+    (function initDashTabs() {
+      const tabs   = document.querySelectorAll('.dash-tab');
+      const panels = document.querySelectorAll('.dash-tab-panel');
+
+      function switchTab(tabName) {
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+        panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + tabName));
+        sessionStorage.setItem('dashTab', tabName);
+      }
+
+      tabs.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+      // Restore last active tab
+      const saved = sessionStorage.getItem('dashTab');
+      if (saved) switchTab(saved);
+
+      // Allow external code to switch to history tab (e.g. after exam submission)
+      window.switchDashTab = switchTab;
+    })();
+  </script>
+</body>
+</html>
