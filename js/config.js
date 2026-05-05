@@ -18,8 +18,8 @@
 window.APP_CONFIG = {
   // ── Supabase ────────────────────────────────────────────────
   // Replace these with your actual values from supabase.com → Settings → API
-  SUPABASE_URL:      window.__ENV_SUPABASE_URL__      || 'https://zwhyftwynrdhxmdmxohg.supabase.co',
-  SUPABASE_ANON_KEY: window.__ENV_SUPABASE_ANON_KEY__ || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3aHlmdHd5bnJkaHhtZG14b2hnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MDI4MzMsImV4cCI6MjA5MjI3ODgzM30.X57wBh_Nm5-ymZteo-_3ZLglp6yheh-fwrLDYmc22jI',
+  SUPABASE_URL:      window.__ENV_SUPABASE_URL__      || 'https://ahacspjymzwlmmfxvykx.supabase.co',
+  SUPABASE_ANON_KEY: window.__ENV_SUPABASE_ANON_KEY__ || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYWNzcGp5bXp3bG1tZnh2eWt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5NzM3OTYsImV4cCI6MjA5MzU0OTc5Nn0.LL6_jh4HlsSIwIfd_X8Ed4AMGO2TJMreGF2ULO2I8IQ',
 
   // ── Exam Defaults ────────────────────────────────────────────
   EXAM_DURATION_SECONDS: 3 * 60 * 60,   // 3 hours
