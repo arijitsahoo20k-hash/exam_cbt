@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════════════════════
+   exam.css — ExamCBT Exam Screen
+   ═══════════════════════════════════════════════════════════ */
+#screen-exam {
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+/* ── Topbar ───────────────────────────────────────────────── */
+.exam-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 52px;
+  background: var(--blue);
+  color: #fff; flex-shrink: 0; gap: 16px;
+  position: relative; z-index: 20;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1; }
+.topbar-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 700; flex-shrink: 0; color: #fff;
+}
+.topbar-logo svg rect { fill: #fff; }
+.topbar-candidate {
+  font-size: 13px; color: rgba(255,255,255,.72);
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.topbar-center { flex-shrink: 0; }
+.timer-block {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums;
+  background: rgba(255,255,255,.18); padding: 7px 16px;
+  border-radius: 99px; letter-spacing: 0.5px;
+}
+.timer-block.warning { background: rgba(234,88,12,.3); color: #fed7aa; }
+.timer-block.danger  { background: rgba(220,38,38,.3); color: #fca5a5; animation: pulse-timer 1s ease infinite; }
+@keyframes pulse-timer { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.topbar-right { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
+.btn-submit-exam {
+  background: #fff; color: var(--blue);
+  border: none; padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.btn-submit-exam:hover { background: #eff6ff; }
+
+/* ── Section Tabs ─────────────────────────────────────────── */
+.section-tabs {
+  display: flex; align-items: center;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  overflow-x: auto; flex-shrink: 0; padding: 0 16px; gap: 2px;
+}
+.section-tab {
+  padding: 12px 20px; font-size: 13px; font-weight: 500;
+  color: var(--text-2); border: none; background: none; cursor: pointer;
+  white-space: nowrap; border-bottom: 2.5px solid transparent;
+  transition: var(--transition); flex-shrink: 0;
+}
+.section-tab:hover { color: var(--text-1); }
+.section-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+
+/* ── Exam Body ────────────────────────────────────────────── */
+.exam-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+/* ── Question Area ────────────────────────────────────────── */
+.question-area {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden; background: var(--surface); min-width: 0;
+}
+.question-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.q-number { font-size: 14px; font-weight: 700; color: var(--text-1); }
+.q-actions { display: flex; align-items: center; gap: 8px; }
+.btn-zoom, .btn-mark {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: var(--radius-sm);
+  font-size: 12.5px; font-weight: 500; transition: var(--transition);
+  border: 1.5px solid var(--border); color: var(--text-2); background: none; cursor: pointer;
+}
+.btn-zoom:hover { border-color: var(--blue); color: var(--blue); }
+.btn-mark:hover { border-color: var(--amber); color: var(--amber); }
+.btn-mark.active { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+
+/* ── Question Image ───────────────────────────────────────── */
+.question-image-wrap {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  overflow: auto; padding: 20px; position: relative;
+  background: #ffffff; min-height: 200px;
+}
+#question-img {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+  image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;
+  filter: none;
+}
+.img-loader {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffffff;
+}
+
+/* ── Options Area ─────────────────────────────────────────── */
+.options-area {
+  padding: 12px 20px; display: flex; flex-direction: column; gap: 8px;
+  border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.option-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); cursor: pointer;
+  transition: var(--transition); user-select: none;
+}
+.option-row:hover { border-color: var(--blue); background: var(--blue-light); }
+.option-row.selected { border-color: var(--blue); background: var(--blue-light); }
+.opt-label {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface-3); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  flex-shrink: 0; transition: var(--transition);
+}
+.option-row.selected .opt-label { background: var(--blue); color: #fff; }
+.opt-text { font-size: 13.5px; color: var(--text-1); line-height: 1.5; }
+
+/* ── Nav Actions ──────────────────────────────────────────── */
+.nav-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; border-top: 1px solid var(--border); flex-shrink: 0;
+  background: var(--surface);
+}
+.btn-clear {
+  padding: 8px 14px; border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 500;
+  color: var(--text-2); background: none; cursor: pointer; transition: var(--transition);
+}
+.btn-clear:hover { border-color: var(--red); color: var(--red); }
+.nav-btns { display: flex; gap: 8px; }
+.btn-nav {
+  padding: 9px 18px; border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+  color: var(--text-2); background: none; cursor: pointer; transition: var(--transition);
+}
+.btn-nav:hover { border-color: var(--text-2); color: var(--text-1); }
+.btn-nav.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-nav.primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.exam-sidebar {
+  width: 248px; flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface); display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden;
+}
+.sidebar-candidate {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.candidate-avatar {
+  width: 36px; height: 36px; background: var(--blue); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+#sidebar-name {
+  font-size: 13px; font-weight: 600; color: var(--text-1);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── Palette Legend ───────────────────────────────────────── */
+.palette-legend {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-2); }
+.dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.dot.answered     { background: var(--green); }
+.dot.not-answered { background: var(--red); }
+.dot.marked       { background: var(--amber); }
+.dot.not-visited  { background: var(--border-dark); }
+.dot.marked-answered { background: linear-gradient(135deg, var(--amber) 50%, var(--green) 50%); border: none; }
+
+/* ── Palette Grid ─────────────────────────────────────────── */
+.palette-section-label {
+  padding: 10px 16px 6px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-3); flex-shrink: 0;
+}
+.palette-grid { padding: 4px 12px 12px; display: flex; flex-wrap: wrap; gap: 5px; }
+.palette-btn {
+  width: 34px; height: 34px; border-radius: 6px; border: none;
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--border); color: var(--text-2);
+}
+.palette-btn.not-visited  { background: var(--surface-3); color: var(--text-2); border: 1px solid var(--border); }
+.palette-btn.answered     { background: var(--green); color: #fff; }
+.palette-btn.not-answered { background: var(--red); color: #fff; }
+.palette-btn.marked       { background: var(--amber); color: #fff; }
+.palette-btn.marked-answered { background: var(--amber); color: #fff; box-shadow: 0 0 0 2.5px var(--green); }
+.palette-btn.current { outline: 2.5px solid var(--blue); outline-offset: 2px; }
+.palette-btn:hover { filter: brightness(0.9); }
+
+/* ── Sidebar Stats ────────────────────────────────────────── */
+.sidebar-stats {
+  margin-top: auto; padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12.5px; color: var(--text-2);
+}
+.stat-row strong { color: var(--text-1); font-weight: 700; }
+
+/* ── Fullscreen ───────────────────────────────────────────── */
+:fullscreen #screen-exam { height: 100vh; }
+:-webkit-full-screen #screen-exam { height: 100vh; }
+
+/* ── Review mode answer highlighting ─────────────────────── */
+.option-row.correct-answer { border-color: var(--green) !important; background: var(--green-bg) !important; }
+.option-row.correct-answer .opt-label { background: var(--green) !important; color: #fff !important; }
+.option-row.wrong-answer { border-color: var(--red) !important; background: var(--red-bg) !important; }
+.option-row.wrong-answer .opt-label { background: var(--red) !important; color: #fff !important; }

@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════════════════════
+   result.css — Exam-portal style result screen
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Screen shell ─────────────────────────────────────────── */
+#screen-result {
+  flex-direction: column;
+  background: #f0f4f8;
+  overflow-y: auto;
+  align-items: stretch;
+}
+/* Ensure the result screen always gets display:flex when active,
+   regardless of cascade order with main.css */
+#screen-result.active {
+  display: flex;
+}
+[data-theme="dark"] #screen-result { background: #181c22; }
+
+/* ── Top bar ──────────────────────────────────────────────── */
+.res-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 56px;
+  background: #0e3d36;
+  flex-shrink: 0;
+  gap: 12px;
+}
+[data-theme="dark"] .res-topbar { background: #0a2620; }
+.res-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.res-topbar-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.res-topbar-sep { color: rgba(255,255,255,0.3); font-size: 14px; }
+.res-topbar-exam {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+.res-submitted-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(74,222,128,0.12);
+  border: 1px solid rgba(74,222,128,0.3);
+  border-radius: 99px;
+  padding: 4px 14px;
+  letter-spacing: 0.2px;
+}
+
+/* ── Body layout ──────────────────────────────────────────── */
+.res-body {
+  display: flex;
+  gap: 20px;
+  padding: 24px 24px 40px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* ── Left column ──────────────────────────────────────────── */
+.res-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 280px;
+  flex-shrink: 0;
+}
+@media (max-width: 760px) { .res-left { width: 100%; } }
+
+/* Candidate card */
+.res-candidate-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+[data-theme="dark"] .res-candidate-card {
+  background: #2f2f2f; border-color: #3d3d3d;
+}
+.res-candidate-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  font-size: 18px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.res-candidate-name { font-size: 15px; font-weight: 700; color: #0f172a; }
+[data-theme="dark"] .res-candidate-name { color: #ececec; }
+.res-candidate-meta { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+/* Score panel */
+.res-score-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 22px 18px 16px;
+  text-align: center;
+}
+[data-theme="dark"] .res-score-panel {
+  background: #2f2f2f; border-color: #3d3d3d;
+}
+.res-score-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.res-score-big {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1;
+  color: #6366f1;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: -2px;
+  margin-bottom: 10px;
+}
+.res-score-denom {
+  font-size: 22px;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.res-score-pct-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.res-pct-badge {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 99px;
+  background: #eef2ff;
+  color: #6366f1;
+  border: 1.5px solid #e0e7ff;
+  font-family: 'Space Mono', monospace;
+}
+[data-theme="dark"] .res-pct-badge {
+  background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.2); color: #818cf8;
+}
+.res-score-hint {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Arc meter */
+.res-arc-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 10px;
+}
+#score-arc {
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1), stroke 0.4s;
+}
+.res-time-taken {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+.res-time-taken strong { color: #475569; }
+[data-theme="dark"] .res-time-taken strong { color: #ababab; }
+
+/* Question summary boxes */
+.res-qsummary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.res-qbox {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  border-top: 3px solid #e2e8f0;
+}
+[data-theme="dark"] .res-qbox { background: #2f2f2f; border-color: #3d3d3d; border-top-color: #3d3d3d; }
+.res-qbox.total    { border-top-color: #64748b; }
+.res-qbox.attempted{ border-top-color: #3b82f6; }
+.res-qbox.correct  { border-top-color: #16a34a; }
+.res-qbox.wrong    { border-top-color: #dc2626; }
+.res-qbox.skipped  { border-top-color: #d97706; }
+.res-qbox.accuracy { border-top-color: #8b5cf6; }
+.res-qbox-num {
+  font-size: 22px;
+  font-weight: 900;
+  font-family: 'Space Mono', monospace;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+[data-theme="dark"] .res-qbox-num { color: #ececec; }
+.res-qbox.correct  .res-qbox-num { color: #16a34a; }
+.res-qbox.wrong    .res-qbox-num { color: #dc2626; }
+.res-qbox.accuracy .res-qbox-num { color: #8b5cf6; }
+[data-theme="dark"] .res-qbox.correct .res-qbox-num  { color: #4caf7d; }
+[data-theme="dark"] .res-qbox.wrong   .res-qbox-num  { color: #f47474; }
+[data-theme="dark"] .res-qbox.accuracy .res-qbox-num { color: #a78bfa; }
+.res-qbox-lbl {
+  font-size: 10px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ── Right column ─────────────────────────────────────────── */
+.res-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Section table card */
+.res-section-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+[data-theme="dark"] .res-section-card {
+  background: #2f2f2f; border-color: #3d3d3d;
+}
+.res-section-heading {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: #0e3d36;
+  padding: 11px 18px;
+}
+[data-theme="dark"] .res-section-heading { background: #0a2620; }
+
+/* Table */
+.res-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.res-table thead tr {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+[data-theme="dark"] .res-table thead tr {
+  background: #383838; border-bottom-color: #3d3d3d;
+}
+.res-table th {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  white-space: nowrap;
+}
+.res-table th:first-child { text-align: left; }
+.res-table td {
+  padding: 12px 14px;
+  text-align: center;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+[data-theme="dark"] .res-table td {
+  color: #ababab; border-bottom-color: #3d3d3d;
+}
+.res-table td:first-child {
+  text-align: left;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 13.5px;
+}
+[data-theme="dark"] .res-table td:first-child { color: #ececec; }
+.res-table tbody tr:last-child td { border-bottom: none; }
+.res-table tbody tr:hover { background: #f8fafc; }
+[data-theme="dark"] .res-table tbody tr:hover { background: #383838; }
+
+/* Total row */
+.res-table tbody tr.res-total-row {
+  background: #eef2ff;
+  font-weight: 800;
+  border-top: 2px solid #e0e7ff;
+}
+[data-theme="dark"] .res-table tbody tr.res-total-row {
+  background: rgba(99,102,241,0.08); border-top-color: rgba(99,102,241,0.2);
+}
+.res-table tbody tr.res-total-row td {
+  color: #0f172a;
+  font-weight: 800;
+}
+[data-theme="dark"] .res-table tbody tr.res-total-row td { color: #ececec; }
+.res-table tbody tr.res-total-row td:first-child { color: #6366f1; }
+
+/* Score cell colour coding */
+.res-cell-good  { color: #16a34a !important; font-weight: 700; }
+.res-cell-mid   { color: #d97706 !important; font-weight: 700; }
+.res-cell-bad   { color: #dc2626 !important; font-weight: 700; }
+[data-theme="dark"] .res-cell-good { color: #4caf7d !important; }
+[data-theme="dark"] .res-cell-mid  { color: #e8a838 !important; }
+[data-theme="dark"] .res-cell-bad  { color: #f47474 !important; }
+
+/* Marks legend */
+.res-marks-legend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+[data-theme="dark"] .res-marks-legend {
+  background: #2f2f2f; border-color: #3d3d3d;
+}
+.res-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #64748b;
+}
+.res-legend-item strong { color: #0f172a; }
+[data-theme="dark"] .res-legend-item strong { color: #ececec; }
+.res-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.res-legend-dot.correct { background: #16a34a; }
+.res-legend-dot.wrong   { background: #dc2626; }
+.res-legend-dot.skipped { background: #d97706; }
+
+/* Actions */
+.res-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.res-btn-primary,
+.res-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  white-space: nowrap;
+}
+.res-btn-primary {
+  background: #6366f1;
+  color: #fff;
+  flex: 1;
+  justify-content: center;
+}
+.res-btn-primary:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,102,241,.28); }
+.res-btn-secondary {
+  background: #fff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  flex: 1;
+  justify-content: center;
+}
+[data-theme="dark"] .res-btn-secondary {
+  background: #383838; color: #ababab; border-color: #525252;
+}
+.res-btn-secondary:hover { border-color: #6366f1; color: #6366f1; }

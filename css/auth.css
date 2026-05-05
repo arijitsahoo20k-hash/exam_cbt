@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════════════════════
+   auth.css — ExamCBT Auth Screen
+   ═══════════════════════════════════════════════════════════ */
+#screen-auth {
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.auth-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.auth-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+}
+.auth-panel {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px; width: 100%; max-width: 400px;
+  box-shadow: var(--shadow-lg); margin: 24px;
+}
+.auth-brand {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 32px;
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+  color: var(--blue);
+}
+.auth-brand svg rect { fill: var(--blue); }
+.auth-tabs {
+  display: flex; gap: 0;
+  background: var(--surface-3); border-radius: var(--radius-md);
+  padding: 4px; margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1; padding: 9px; border-radius: 7px;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-2); background: none; border: none;
+  cursor: pointer; transition: var(--transition);
+}
+.auth-tab.active {
+  background: var(--surface); color: var(--blue);
+  font-weight: 600; box-shadow: var(--shadow-sm);
+}
+.auth-form { display: none; flex-direction: column; gap: 16px; }
+.auth-form.active { display: flex; }
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-group label { font-size: 13px; font-weight: 600; color: var(--text-2); }
+.field-group input {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px; color: var(--text-1);
+  background: var(--surface-2); transition: var(--transition); outline: none;
+}
+.field-group input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(14,148,136,.12);
+}
+.field-group input::placeholder { color: var(--text-3); }
+.auth-error { font-size: 13px; color: var(--red); min-height: 18px; font-weight: 500; }
+.btn-guest {
+  background: transparent; color: var(--text-2);
+  border: 1.5px solid var(--border-dark);
+  padding: 11px 24px; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: var(--transition); width: 100%; text-align: center;
+}
+.btn-guest:hover { border-color: var(--blue); color: var(--blue); }
