@@ -10,8 +10,8 @@
  */
 
 const SupabaseClient = (() => {
-  const BASE = () => window.APP_CONFIG?.SUPABASE_URL || 'https://ahacspjymzwlmmfxvykx.supabase.co';
-  const KEY  = () => window.APP_CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYWNzcGp5bXp3bG1tZnh2eWt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5NzM3OTYsImV4cCI6MjA5MzU0OTc5Nn0.LL6_jh4HlsSIwIfd_X8Ed4AMGO2TJMreGF2ULO2I8IQ';
+  const BASE = () => window.APP_CONFIG?.SUPABASE_URL || '';
+  const KEY  = () => window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
 
   let _token = null;
 
